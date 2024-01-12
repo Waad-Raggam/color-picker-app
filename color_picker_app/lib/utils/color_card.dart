@@ -18,9 +18,36 @@ class ColorCard extends StatelessWidget {
         ),
       ),
       child: Card(
-        color: color.isBlindMode
-            ? colorBlindness(color.value, ColorBlindnessType.achromatomaly)
-            : Color(color.value.value),
+        color: () {
+          switch (color.typeSelected) {
+            case ColorBlindnessType.protanomaly:
+              return colorBlindness(
+                  color.value, ColorBlindnessType.protanomaly);
+            case ColorBlindnessType.deuteranomaly:
+              return colorBlindness(
+                  color.value, ColorBlindnessType.deuteranomaly);
+            case ColorBlindnessType.tritanomaly:
+              return colorBlindness(
+                  color.value, ColorBlindnessType.tritanomaly);
+            case ColorBlindnessType.protanopia:
+              return colorBlindness(color.value, ColorBlindnessType.protanopia);
+            case ColorBlindnessType.deuteranopia:
+              return colorBlindness(
+                  color.value, ColorBlindnessType.deuteranopia);
+            case ColorBlindnessType.tritanopia:
+              return colorBlindness(color.value, ColorBlindnessType.tritanopia);
+            case ColorBlindnessType.achromatopsia:
+              return colorBlindness(
+                  color.value, ColorBlindnessType.achromatopsia);
+            case ColorBlindnessType.achromatomaly:
+              return colorBlindness(
+                  color.value, ColorBlindnessType.achromatomaly);
+
+            case ColorBlindnessType.none:
+            default:
+              return Color(color.value.value);
+          }
+        }(),
         child: Container(
           height: 100,
           alignment: Alignment.center,
