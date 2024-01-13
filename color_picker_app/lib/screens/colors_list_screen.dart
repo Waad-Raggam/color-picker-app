@@ -8,31 +8,46 @@ import 'package:color_picker_app/utils/color_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ColorsListScreen extends StatelessWidget {
+class ColorsListScreen extends StatefulWidget {
+  @override
+  _ColorsListScreenState createState() => _ColorsListScreenState();
+}
+
+class _ColorsListScreenState extends State<ColorsListScreen> {
+  bool showHexValue = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFF393441),
         title: Builder(
           builder: (appBarContext) {
             return BlocBuilder<ColorsListBloc, ColorsListState>(
               builder: (context, state) {
-                // Retrieve the current typeSelected
                 final typeSelected = (state is ColorsListLoaded)
                     ? state.colors.first.typeSelected
                     : ColorBlindnessType.none;
-
-                // Build the title based on typeSelected
                 return ColorBlindType(typeSelected: typeSelected);
               },
             );
           },
         ),
         actions: [
+          Switch(
+            activeColor: Colors.green,
+            inactiveThumbColor: Colors.grey,
+            value: showHexValue,
+            onChanged: (value) {
+              context.read<ColorsListBloc>().add(ToggleColorInfoEvent(value));
+              setState(() {
+                showHexValue = value;
+              });
+            },
+          ),
           IconButton(
-            icon: const Icon(Icons.color_lens),
+            icon: const Icon(Icons.visibility_off_outlined),
             onPressed: () {
-              // Dispatch the ChangeColorBlindnessEvent to update the color scheme
               context.read<ColorsListBloc>().add(ChangeColorBlindnessEvent());
             },
           ),
@@ -47,25 +62,29 @@ class ColorsListScreen extends StatelessWidget {
           } else if (state is ColorsListLoaded) {
             return Column(
               children: [
-                // Row of circles
-                Container(
+                SizedBox(
                   height: 150,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: state.colors.length,
                     itemBuilder: (context, index) {
                       final color = state.colors[index];
-                      return ColorCircle(color: color);
+                      return ColorCircle(
+                        color: color,
+                        showHexValue: showHexValue,
+                      );
                     },
                   ),
                 ),
-                // List of cards
                 Expanded(
                   child: ListView.builder(
                     itemCount: state.colors.length,
                     itemBuilder: (context, index) {
                       final color = state.colors[index];
-                      return ColorCard(color: color);
+                      return ColorCard(
+                        color: color,
+                        showHexValue: showHexValue,
+                      );
                     },
                   ),
                 ),

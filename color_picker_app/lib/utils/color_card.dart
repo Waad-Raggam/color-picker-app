@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 
 class ColorCard extends StatelessWidget {
   final ColorModel color;
+  final bool showHexValue;
 
-  ColorCard({required this.color});
+  ColorCard({required this.color, required this.showHexValue});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,7 @@ class ColorCard extends StatelessWidget {
             height: 100,
             alignment: Alignment.center,
             child: Text(
-              color.name,
+              showHexValue ? color.hexCode : color.name,
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,

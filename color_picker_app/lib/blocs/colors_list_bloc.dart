@@ -133,4 +133,19 @@ class ColorsListBloc extends Bloc<ColorsListEvent, ColorsListState> {
       emit(ColorsListErrorState('Failed to change color blindness: $e'));
     }
   }
+
+  void _onToggleColorInfoEvent(
+    ToggleColorInfoEvent event,
+    Emitter<ColorsListState> emit,
+  ) async {
+    try {
+      emit(ColorsListLoaded(
+        colorsList
+            .map((color) => color.copyWith(showHexValue: event.showHexValue))
+            .toList(),
+      ));
+    } catch (e) {
+      emit(ColorsListErrorState('Failed to toggle color info: $e'));
+    }
+  }
 }
