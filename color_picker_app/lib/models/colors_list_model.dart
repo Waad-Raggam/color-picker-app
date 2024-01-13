@@ -27,8 +27,8 @@ class ColorModel {
   // Convert color to colorblind-friendly version
   ColorModel toColorblind(ColorBlindnessType typeSelected) {
     return ColorModel(
-      name: '$name (CB)',
-      hexCode: '#AAAAAA',
+      name: name,
+      hexCode: hexCode,
       value: value,
       isBlindMode: true,
       typeSelected: typeSelected,
