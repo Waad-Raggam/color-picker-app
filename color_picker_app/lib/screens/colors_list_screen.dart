@@ -3,6 +3,7 @@ import 'package:color_picker_app/blocs/colors_list_bloc.dart';
 import 'package:color_picker_app/blocs/colors_list_events.dart';
 import 'package:color_picker_app/blocs/colors_list_states.dart';
 import 'package:color_picker_app/utils/color_card.dart';
+import 'package:color_picker_app/utils/color_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -76,12 +77,31 @@ class ColorsListScreen extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else if (state is ColorsListLoaded) {
-            return ListView.builder(
-              itemCount: state.colors.length,
-              itemBuilder: (context, index) {
-                final color = state.colors[index];
-                return ColorCard(color: color);
-              },
+            return Column(
+              children: [
+                // Row of circles
+                Container(
+                  height: 150,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: state.colors.length,
+                    itemBuilder: (context, index) {
+                      final color = state.colors[index];
+                      return ColorCircle(color: color);
+                    },
+                  ),
+                ),
+                // List of cards
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: state.colors.length,
+                    itemBuilder: (context, index) {
+                      final color = state.colors[index];
+                      return ColorCard(color: color);
+                    },
+                  ),
+                ),
+              ],
             );
           } else if (state is ColorsListErrorState) {
             return Center(
