@@ -1,15 +1,37 @@
+import 'package:color_blindness/color_blindness.dart';
+import 'package:flutter/material.dart';
+
 class ColorModel {
   final String name;
   final String hexCode;
-  final int value;
+  final Color value;
+  final bool isBlindMode;
+  final ColorBlindnessType typeSelected;
 
-  ColorModel({required this.name, required this.hexCode, required this.value});
+  ColorModel(
+      {required this.name,
+      required this.hexCode,
+      required this.value,
+      required this.isBlindMode,
+      required this.typeSelected});
 
   factory ColorModel.fromJson(Map<String, dynamic> json) {
     return ColorModel(
-      name: json['name'] ?? '',
-      hexCode: json['hex'] ?? '',
-      value: int.parse(json['value'].substring(1), radix: 16),
+        name: json['name'] ?? '',
+        hexCode: json['hex'] ?? '',
+        value: json['value'],
+        isBlindMode: json['isBlindMode'],
+        typeSelected: ColorBlindnessType.values[int.parse(json['selected'])]);
+  }
+
+  // Convert color to colorblind-friendly version
+  ColorModel toColorblind(ColorBlindnessType typeSelected) {
+    return ColorModel(
+      name: '$name (CB)',
+      hexCode: '#AAAAAA',
+      value: value,
+      isBlindMode: true,
+      typeSelected: typeSelected,
     );
   }
 }
